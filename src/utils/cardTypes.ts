@@ -1,0 +1,1 @@
+export const cardTypes = [ "groceries", "restaurant", "transport",  "education", "health"];
