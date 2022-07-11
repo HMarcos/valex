@@ -8,4 +8,5 @@ export async function createCard(company: Company, employee: Employee, cardType:
     console.log(employee);
     console.log(cardType);
     await cardUtils.checkIfEmployeeBelongsToCompany(employee, company);
+    await cardUtils.checkIfEmployeeHasThisCard(employee, cardType);
 }
