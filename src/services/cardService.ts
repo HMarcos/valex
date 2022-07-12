@@ -11,7 +11,7 @@ export async function createCard(company: Company, employee: Employee, cardType:
     const cardNumber = cardUtils.generateCardNumber();
     const formatedCardName = cardUtils.formatCardName(employee.fullName);
     const expirationDate = cardUtils.calculateExpirationDate();
-    const encryptedSecurityCode = cardUtils.generateEncryptedSecurityCode();
+    const {securityCode, encryptedSecurityCode} = cardUtils.generateEncryptedSecurityCode();
 
     const card: cardRepository.CardInsertData = {
         employeeId: employee.id,
@@ -25,6 +25,16 @@ export async function createCard(company: Company, employee: Employee, cardType:
     }
 
     await cardRepository.insert(card);
+
+    const cardData = {
+        numer: card.number,
+        name: card.cardholderName,
+        expirationDate: card.expirationDate,
+        type: card.type,
+        securityCode
+    }
+
+    return cardData;
 };
 
 export async function activeCard(card: cardRepository.Card, employee: Employee, password: string, securityCode: string) {
@@ -35,5 +45,5 @@ export async function activeCard(card: cardRepository.Card, employee: Employee, 
     cardUtils.checkIfTheCardIsExpired(card);
 
     const encryptedPassword = cardUtils.encryptPassword(password);
-    await cardRepository.update(card.id, {password: encryptedPassword});
+    await cardRepository.update(card.id, { password: encryptedPassword });
 }

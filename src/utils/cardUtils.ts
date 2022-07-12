@@ -62,19 +62,19 @@ export function generateEncryptedSecurityCode() {
     const cryptr = new Cryptr(constants.SECRET_KEY);
     const securityCode = faker.finance.creditCardCVV();
     const encryptedSecurityCode = cryptr.encrypt(securityCode);
-    return  encryptedSecurityCode;
+    return { securityCode, encryptedSecurityCode };
 };
 
 export function checkIfCardBelongsToEmployee(card: cardRepository.Card, employee: Employee) {
-    if (card.employeeId !== employee.id){
+    if (card.employeeId !== employee.id) {
         throw new AppError(403, "The card does not belong to the employee.");
     }
 };
 
-export function validateSecurityCode(card: cardRepository.Card, securityCode: string){
+export function validateSecurityCode(card: cardRepository.Card, securityCode: string) {
     const cryptr = new Cryptr(constants.SECRET_KEY);
     const validSecurityCode = cryptr.decrypt(card.securityCode);
-    if (validSecurityCode !== securityCode){
+    if (validSecurityCode !== securityCode) {
         throw new AppError(403, "The security code is invalid.");
     }
 };
@@ -85,8 +85,8 @@ export function checkIfTheCardIsAlreadyActive(card: cardRepository.Card) {
     }
 };
 
-export function checkIfTheCardIsExpired(card: cardRepository.Card){
-    const {month: expirationMonth, year: expirationYear} = getExpirationDateInfo(card.expirationDate);
+export function checkIfTheCardIsExpired(card: cardRepository.Card) {
+    const { month: expirationMonth, year: expirationYear } = getExpirationDateInfo(card.expirationDate);
     const formatedExpirationDate = `${expirationMonth}/${constants.EXPIRATION_DAY}/${expirationYear}`;
     const expirationDate = dayjs(formatedExpirationDate);
     const today = dayjs();
@@ -95,7 +95,7 @@ export function checkIfTheCardIsExpired(card: cardRepository.Card){
     }
 }
 
-function getExpirationDateInfo(expirationDate: string){
+function getExpirationDateInfo(expirationDate: string) {
     const [month, year] = expirationDate.split('/');
     return {
         month,
@@ -106,5 +106,5 @@ function getExpirationDateInfo(expirationDate: string){
 export function encryptPassword(password: string) {
     const cryptr = new Cryptr(constants.SECRET_KEY);
     const encryptedPassword = cryptr.encrypt(password);
-    return  encryptedPassword;
+    return encryptedPassword;
 }

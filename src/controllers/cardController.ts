@@ -9,16 +9,16 @@ export async function createCard(req: Request, res: Response) {
     const employee: Employee = res.locals.employee;
     const cardType: TransactionTypes = req.body.cardType;
 
-    await cardService.createCard(company, employee, cardType);
+    const card = await cardService.createCard(company, employee, cardType);
 
     console.log('Card registered sucessfully ...');
-    res.sendStatus(201);
+    res.status(201).send(card);
 };
 
-export async function activeCard(req: Request, res: Response){
+export async function activeCard(req: Request, res: Response) {
     const card: Card = res.locals.card;
     const employee: Employee = res.locals.employee;
-    
+
     const password: string = req.body.password;
     const securityCode: string = req.body.securityCode;
 
