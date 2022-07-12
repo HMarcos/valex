@@ -123,7 +123,7 @@ export async function unlockCard(card: cardRepository.Card, employee: Employee, 
 
     const cardIsActive = cardUtils.checkIfTheCardIsActive(card);
     if (!cardIsActive) {
-        throw new AppError(403, "The card is not active.")
+        throw new AppError(403, "The card is not active.");
     };
 
     const cardIsExpired = cardUtils.checkIfTheCardIsExpired(card);

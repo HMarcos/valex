@@ -11,3 +11,4 @@ export const SECRET_KEY = process.env.SECRET_KEY || "secretKey";
 export const PASSWORD_LENGTH = 4;
 export const SECURITY_CODE_LENGTH = 3;
 export const EXPIRATION_DAY = (1).toString().padStart(2,"0");
+export const MIN_RECHARGE = 1;

@@ -4,7 +4,8 @@ import AppError from "../utils/appErros.js";
 
 
 export async function validateCardRegistration(req: Request, res: Response, next: NextFunction) {
-    const cardId = Number(req.params.cardId);
+    let cardId = req.params.cardId || req.body.cardId;
+    cardId = Number(cardId);
     if (isNaN(cardId)) {
         throw new AppError(422, "cardId must be a number.");
     }
