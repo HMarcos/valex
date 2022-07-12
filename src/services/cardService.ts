@@ -2,11 +2,18 @@ import * as cardUtils from "./../utils/cardUtils.js";
 import * as cardRepository from "../repositories/cardRepository.js";
 import { Company } from "../repositories/companyRepository.js";
 import { Employee } from "../repositories/employeeRepository.js";
+import AppError from "../utils/appErros.js";
 
 export async function createCard(company: Company, employee: Employee, cardType: cardRepository.TransactionTypes) {
 
-    cardUtils.checkIfEmployeeBelongsToCompany(employee, company);
-    await cardUtils.checkIfEmployeeHasThisCard(employee, cardType);
+    const employeeBelongsToCompany = cardUtils.checkIfEmployeeBelongsToCompany(employee, company);
+    if (!employeeBelongsToCompany) {
+        throw new AppError(403, "The employee does not belong to the company.");
+    }
+    const employeeHasThisCard = await cardUtils.checkIfEmployeeHasThisCard(employee, cardType);
+    if (employeeHasThisCard) {
+        throw new AppError(409, "The employee already has this type of card.")
+    }
 
     const cardNumber = cardUtils.generateCardNumber();
     const formatedCardName = cardUtils.formatCardName(employee.fullName);
@@ -39,10 +46,25 @@ export async function createCard(company: Company, employee: Employee, cardType:
 
 export async function activeCard(card: cardRepository.Card, employee: Employee, password: string, securityCode: string) {
 
-    cardUtils.checkIfCardBelongsToEmployee(card, employee);
-    cardUtils.validateSecurityCode(card, securityCode);
-    cardUtils.checkIfTheCardIsAlreadyActive(card);
-    cardUtils.checkIfTheCardIsExpired(card);
+    const cardBelongsToEmployee = cardUtils.checkIfCardBelongsToEmployee(card, employee);
+    if (!cardBelongsToEmployee) {
+        throw new AppError(403, "The card does not belong to the employee.");
+    }
+
+    const validSecurityCode = cardUtils.validateSecurityCode(card, securityCode);
+    if (!validSecurityCode) {
+        throw new AppError(403, "The security code is invalid.");
+    }
+
+    const cardIsAlreadyActive = cardUtils.checkIfTheCardIsActive(card);
+    if (cardIsAlreadyActive) {
+        throw new AppError(403, "The card is already active.")
+    }
+
+    const cardIsExpired = cardUtils.checkIfTheCardIsExpired(card);
+    if (cardIsExpired) {
+        throw new AppError(403, "The card is expired.");
+    }
 
     const encryptedPassword = cardUtils.encryptPassword(password);
     await cardRepository.update(card.id, { password: encryptedPassword });

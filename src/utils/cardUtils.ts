@@ -5,7 +5,6 @@ import { Employee } from "../repositories/employeeRepository.js";
 import * as cardRepository from "../repositories/cardRepository.js";
 import * as paymentRepository from "../repositories/paymentRepository.js";
 import * as rechargeRepository from "../repositories/rechargeRepository.js";
-import AppError from "./appErros.js";
 
 import * as constants from "./constants.js";
 import Cryptr from "cryptr";
@@ -13,15 +12,17 @@ import Cryptr from "cryptr";
 
 export function checkIfEmployeeBelongsToCompany(employee: Employee, company: Company) {
     if (employee.companyId != company.id) {
-        throw new AppError(403, "The employee does not belong to the company.");
+        return false;
     }
+    return true;
 };
 
 export async function checkIfEmployeeHasThisCard(employee: Employee, cardType: cardRepository.TransactionTypes) {
     const card = await cardRepository.findByTypeAndEmployeeId(cardType, employee.id);
     if (card) {
-        throw new AppError(409, "The employee already has this type of card.");
+        return true;
     }
+    return false;
 };
 
 export function generateCardNumber() {
@@ -69,22 +70,25 @@ export function generateEncryptedSecurityCode() {
 
 export function checkIfCardBelongsToEmployee(card: cardRepository.Card, employee: Employee) {
     if (card.employeeId !== employee.id) {
-        throw new AppError(403, "The card does not belong to the employee.");
+        return false;
     }
+    return true;
 };
 
 export function validateSecurityCode(card: cardRepository.Card, securityCode: string) {
     const cryptr = new Cryptr(constants.SECRET_KEY);
     const validSecurityCode = cryptr.decrypt(card.securityCode);
     if (validSecurityCode !== securityCode) {
-        throw new AppError(403, "The security code is invalid.");
+        return false;
     }
+    return true;
 };
 
-export function checkIfTheCardIsAlreadyActive(card: cardRepository.Card) {
+export function checkIfTheCardIsActive(card: cardRepository.Card) {
     if (card.password) {
-        throw new AppError(403, "The card is already active.");
+        return true;
     }
+    return false;
 };
 
 export function checkIfTheCardIsExpired(card: cardRepository.Card) {
@@ -93,8 +97,9 @@ export function checkIfTheCardIsExpired(card: cardRepository.Card) {
     const expirationDate = dayjs(formatedExpirationDate);
     const today = dayjs();
     if (today.isAfter(expirationDate)) {
-        throw new AppError(403, "The card is expired.");
+        return true;
     }
+    return false;
 }
 
 function getExpirationDateInfo(expirationDate: string) {
