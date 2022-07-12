@@ -31,4 +31,15 @@ export async function getBalanceAndOperations(req: Request, res: Response) {
     const card: Card = res.locals.card;
     const balanceAndOperations = await cardService.getBalanceAndOperations(card);
     res.status(200).send(balanceAndOperations);
-}
+};
+
+export async function blockCard(req: Request, res: Response) {
+    const card: Card = res.locals.card;
+    const employee: Employee = res.locals.employee;
+
+    const password: string = req.body.password;
+
+    await cardService.blockCard(card, employee, password);
+    console.log('Card blocked successfully...');
+    res.sendStatus(200);
+};

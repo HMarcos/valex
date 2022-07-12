@@ -22,6 +22,14 @@ cardRouter.put(
     cardController.activeCard
 );
 
+cardRouter.put(
+    "/cards/:cardId/block",
+    validateCardRegistration,
+    validateSchema(cardSchemas.cardBlockSchema),
+    validateEmployeeRegistration,
+    cardController.blockCard
+);
+
 cardRouter.get(
     "/cards/:cardId/operations",
     validateCardRegistration,

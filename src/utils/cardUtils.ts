@@ -84,6 +84,15 @@ export function validateSecurityCode(card: cardRepository.Card, securityCode: st
     return true;
 };
 
+export function validatePassword(card: cardRepository.Card, password: string) {
+    const cryptr = new Cryptr(constants.SECRET_KEY);
+    const validPassword = cryptr.decrypt(card.password);
+    if (validPassword !== password) {
+        return false;
+    }
+    return true;
+};
+
 export function checkIfTheCardIsActive(card: cardRepository.Card) {
     if (card.password) {
         return true;
@@ -154,4 +163,11 @@ function formatOperationTimestamp(operations: any) {
     })
 
     return formatedOperations;
+};
+
+export function checkIfTheCardIsBlocked(card: cardRepository.Card) {
+    if (card.isBlocked){
+        return true;
+    }
+    return false;
 }
