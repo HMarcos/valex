@@ -64,3 +64,9 @@ export function generateEncryptedSecurityCode() {
     const encryptedSecurityCode = cryptr.encrypt(securityCode);
     return  encryptedSecurityCode;
 };
+
+export async function checkIfCardBelongsToEmployee(card: cardRepository.Card, employee: Employee) {
+    if (card.employeeId !== employee.id){
+        throw new AppError(403, "The card does not belong to the employee.");
+    }
+}

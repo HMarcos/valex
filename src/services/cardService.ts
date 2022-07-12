@@ -30,4 +30,7 @@ export async function createCard(company: Company, employee: Employee, cardType:
 export async function activeCard(card: cardRepository.Card, employee: Employee) {
     console.log(card);
     console.log(employee);
+
+    await cardUtils.checkIfCardBelongsToEmployee(card, employee);
+    
 }
