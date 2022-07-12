@@ -25,7 +25,8 @@ $ npm run dev
 ```
 - POST /cards (autenticada)
     - Rota em que as empresas podem criar cartões para os seus funcionários.
-    - Os cartões só podem ser dos seguintes tipos: "groceries", "restaurant", "transport",  "education", "health". 
+    - Os cartões só podem ser dos seguintes tipos: 
+        ["groceries", "restaurant", "transport",  "education", "health"] 
     - headers: {"x-api-key:" "API-KEY da empresa"}
     - body: {
         "employeeId": 1,
