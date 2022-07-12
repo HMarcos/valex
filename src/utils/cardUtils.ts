@@ -61,7 +61,6 @@ export function calculateExpirationDate() {
 export function generateEncryptedSecurityCode() {
     const cryptr = new Cryptr(constants.SECRET_KEY);
     const securityCode = faker.finance.creditCardCVV();
-    console.log("Security Code: ", securityCode);
     const encryptedSecurityCode = cryptr.encrypt(securityCode);
     return  encryptedSecurityCode;
-}
+};

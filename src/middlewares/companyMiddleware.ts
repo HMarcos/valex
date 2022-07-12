@@ -4,8 +4,7 @@ import AppError from "../utils/appErros.js";
 
 export async function validateCompanyRegistration(req: Request, res: Response, next: NextFunction) {
     const xApiKey: string = req.headers["x-api-key"]?.toString();
-    console.log(xApiKey);
-
+    
     if (!xApiKey) {
         throw new AppError(422, "x-api-key invalid.");
     }

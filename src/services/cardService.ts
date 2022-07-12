@@ -1,12 +1,10 @@
 import * as cardUtils from "./../utils/cardUtils.js";
+import * as cardRepository from "../repositories/cardRepository.js";
 import { Company } from "../repositories/companyRepository.js";
 import { Employee } from "../repositories/employeeRepository.js";
-import { TransactionTypes } from "../repositories/cardRepository.js";
 
-export async function createCard(company: Company, employee: Employee, cardType: TransactionTypes) {
-    console.log(company);
-    console.log(employee);
-    console.log(cardType);
+export async function createCard(company: Company, employee: Employee, cardType: cardRepository.TransactionTypes) {
+
     await cardUtils.checkIfEmployeeBelongsToCompany(employee, company);
     await cardUtils.checkIfEmployeeHasThisCard(employee, cardType);
 
@@ -14,5 +12,17 @@ export async function createCard(company: Company, employee: Employee, cardType:
     const formatedCardName = cardUtils.formatCardName(employee.fullName);
     const expirationDate = cardUtils.calculateExpirationDate();
     const encryptedSecurityCode = cardUtils.generateEncryptedSecurityCode();
-    console.log(cardNumber, formatedCardName, expirationDate, encryptedSecurityCode);
+
+    const card: cardRepository.CardInsertData = {
+        employeeId: employee.id,
+        number: cardNumber,
+        cardholderName: formatedCardName,
+        securityCode: encryptedSecurityCode,
+        expirationDate: expirationDate,
+        isVirtual: false,
+        isBlocked: true,
+        type: cardType
+    }
+
+    await cardRepository.insert(card);
 }
