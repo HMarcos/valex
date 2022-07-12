@@ -22,4 +22,10 @@ cardRouter.put(
     cardController.activeCard
 );
 
+cardRouter.get(
+    "/cards/:cardId/operations",
+    validateCardRegistration,
+    cardController.getBalanceAndOperations
+)
+
 export default cardRouter;

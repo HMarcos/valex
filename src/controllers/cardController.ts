@@ -25,4 +25,9 @@ export async function activeCard(req: Request, res: Response) {
     await cardService.activeCard(card, employee, password, securityCode);
     console.log('Card activated successfully...');
     res.sendStatus(200);
+};
+
+export async function getBalanceAndOperations(req: Request, res: Response) {
+    const card: Card = res.locals.card;
+    res.sendStatus(200);
 }
