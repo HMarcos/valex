@@ -71,6 +71,14 @@ export function checkIfCardBelongsToEmployee(card: cardRepository.Card, employee
     }
 };
 
+export function validateSecurityCode(card: cardRepository.Card, securityCode: string){
+    const cryptr = new Cryptr(constants.SECRET_KEY);
+    const validSecurityCode = cryptr.decrypt(card.securityCode);
+    if (validSecurityCode !== securityCode){
+        throw new AppError(403, "The security code is invalid.");
+    }
+};
+
 export function checkIfTheCardIsAlreadyActive(card: cardRepository.Card) {
     if (card.password) {
         throw new AppError(403, "The card is already active.");
@@ -93,4 +101,10 @@ function getExpirationDateInfo(expirationDate: string){
         month,
         year
     }
+};
+
+export function encryptPassword(password: string) {
+    const cryptr = new Cryptr(constants.SECRET_KEY);
+    const encryptedPassword = cryptr.encrypt(password);
+    return  encryptedPassword;
 }

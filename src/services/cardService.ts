@@ -27,11 +27,13 @@ export async function createCard(company: Company, employee: Employee, cardType:
     await cardRepository.insert(card);
 };
 
-export async function activeCard(card: cardRepository.Card, employee: Employee) {
-    console.log(card);
-    console.log(employee);
+export async function activeCard(card: cardRepository.Card, employee: Employee, password: string, securityCode: string) {
 
     cardUtils.checkIfCardBelongsToEmployee(card, employee);
+    cardUtils.validateSecurityCode(card, securityCode);
     cardUtils.checkIfTheCardIsAlreadyActive(card);
     cardUtils.checkIfTheCardIsExpired(card);
+
+    const encryptedPassword = cardUtils.encryptPassword(password);
+    await cardRepository.update(card.id, {password: encryptedPassword});
 }
