@@ -11,7 +11,7 @@ import Cryptr from "cryptr";
 
 export async function checkIfEmployeeBelongsToCompany(employee: Employee, company: Company) {
     if (employee.companyId != company.id) {
-        throw new AppError(409, "The employee does not belong to the company.");
+        throw new AppError(403, "The employee does not belong to the company.");
     }
 };
 

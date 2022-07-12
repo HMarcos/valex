@@ -13,4 +13,6 @@ cardRouter.post("/cards",
     cardController.createCard
 );
 
+cardRouter.put("/cards/:id/activation", cardController.activeCard);
+
 export default cardRouter;

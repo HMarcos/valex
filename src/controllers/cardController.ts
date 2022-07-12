@@ -13,4 +13,8 @@ export async function createCard(req: Request, res: Response) {
 
     console.log('Card sucessfully registered...');
     res.sendStatus(201);
+};
+
+export async function activeCard(req: Request, res: Response){
+    res.send(200);
 }
