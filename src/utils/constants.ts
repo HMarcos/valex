@@ -4,7 +4,8 @@ dotenv.config();
 
 export const CARD_FORMAT =  "#### #### #### ####";
 export const MIN_NAME_LENGTH = 3;
-export const DATE_FORMAT = "MM/YY";
+export const CARD_DATE_FORMAT = "MM/YY";
+export const OPERATION_TIMESTAMP_FORMAT = "DD/MM/YYYY";
 export const ADDITIONAL_YEARS = 5;
 export const SECRET_KEY = process.env.SECRET_KEY || "secretKey";
 export const PASSWORD_LENGTH = 4;

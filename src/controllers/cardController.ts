@@ -29,5 +29,6 @@ export async function activeCard(req: Request, res: Response) {
 
 export async function getBalanceAndOperations(req: Request, res: Response) {
     const card: Card = res.locals.card;
-    res.sendStatus(200);
+    const balanceAndOperations = await cardService.getBalanceAndOperations(card);
+    res.status(200).send(balanceAndOperations);
 }

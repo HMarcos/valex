@@ -3,6 +3,8 @@ import dayjs from "dayjs";
 import { Company } from "../repositories/companyRepository.js";
 import { Employee } from "../repositories/employeeRepository.js";
 import * as cardRepository from "../repositories/cardRepository.js";
+import * as paymentRepository from "../repositories/paymentRepository.js";
+import * as rechargeRepository from "../repositories/rechargeRepository.js";
 import AppError from "./appErros.js";
 
 import * as constants from "./constants.js";
@@ -54,7 +56,7 @@ function formatMiddleNames(middleNames: string[]) {
 export function calculateExpirationDate() {
     const today = dayjs();
     const expirationDate = today.add(constants.ADDITIONAL_YEARS, 'year');
-    const formatedExpirationDate = expirationDate.format(constants.DATE_FORMAT);
+    const formatedExpirationDate = expirationDate.format(constants.CARD_DATE_FORMAT);
     return formatedExpirationDate;
 };
 
@@ -107,4 +109,44 @@ export function encryptPassword(password: string) {
     const cryptr = new Cryptr(constants.SECRET_KEY);
     const encryptedPassword = cryptr.encrypt(password);
     return encryptedPassword;
+};
+
+export async function getAllCardPayments(cardId: number) {
+    let payments = await paymentRepository.findByCardId(cardId);
+    payments = formatOperationTimestamp(payments);
+    const amounts = payments.map(payment => payment.amount);
+    const totalSpent = sumArrayValues(amounts);
+    return {
+        totalSpent,
+        payments
+    };
+};
+
+export async function getAllCardRecharges(cardId: number) {
+    let recharges = await rechargeRepository.findByCardId(cardId);
+    recharges = formatOperationTimestamp(recharges);
+    const amounts = recharges.map(recharge => recharge.amount);
+    const totalRecharged = sumArrayValues(amounts);
+    return {
+        totalRecharged,
+        recharges
+    };
+};
+
+function sumArrayValues(array: number[]) {
+    return array.reduce((partialSum, value) => partialSum + value, 0);
+};
+
+function formatOperationTimestamp(operations: any) {
+    const formatedOperations = operations.map((operation) => {
+        const formatedTimestamp = dayjs(operation.timestamp)
+            .format(constants.OPERATION_TIMESTAMP_FORMAT);
+        delete operation.timestamp;
+        return {
+            ...operation,
+            timestamp: formatedTimestamp
+        }
+    })
+
+    return formatedOperations;
 }

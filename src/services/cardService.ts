@@ -11,7 +11,7 @@ export async function createCard(company: Company, employee: Employee, cardType:
     const cardNumber = cardUtils.generateCardNumber();
     const formatedCardName = cardUtils.formatCardName(employee.fullName);
     const expirationDate = cardUtils.calculateExpirationDate();
-    const {securityCode, encryptedSecurityCode} = cardUtils.generateEncryptedSecurityCode();
+    const { securityCode, encryptedSecurityCode } = cardUtils.generateEncryptedSecurityCode();
 
     const card: cardRepository.CardInsertData = {
         employeeId: employee.id,
@@ -46,4 +46,17 @@ export async function activeCard(card: cardRepository.Card, employee: Employee, 
 
     const encryptedPassword = cardUtils.encryptPassword(password);
     await cardRepository.update(card.id, { password: encryptedPassword });
-}
+};
+
+export async function getBalanceAndOperations(card: cardRepository.Card) {
+    const { totalSpent, payments: transactions } = await cardUtils.getAllCardPayments(card.id);
+    const { totalRecharged, recharges } = await cardUtils.getAllCardRecharges(card.id);
+
+    const balance = totalRecharged - totalSpent;
+
+    return {
+        balance,
+        transactions,
+        recharges
+    }
+};
