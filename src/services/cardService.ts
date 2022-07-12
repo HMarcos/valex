@@ -25,4 +25,9 @@ export async function createCard(company: Company, employee: Employee, cardType:
     }
 
     await cardRepository.insert(card);
+};
+
+export async function activeCard(card: cardRepository.Card, employee: Employee) {
+    console.log(card);
+    console.log(employee);
 }

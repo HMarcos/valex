@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import * as cardService from "./../services/cardService.js";
 import { Company } from "../repositories/companyRepository.js";
 import { Employee } from "../repositories/employeeRepository.js";
-import { TransactionTypes } from "../repositories/cardRepository.js";
+import { Card, TransactionTypes } from "../repositories/cardRepository.js";
 
 export async function createCard(req: Request, res: Response) {
     const company: Company = res.locals.company;
@@ -16,5 +16,9 @@ export async function createCard(req: Request, res: Response) {
 };
 
 export async function activeCard(req: Request, res: Response){
-    res.send(200);
+    const card: Card = res.locals.card;
+    const employee: Employee = res.locals.employee;
+
+    await cardService.activeCard(card, employee);
+    res.sendStatus(200);
 }

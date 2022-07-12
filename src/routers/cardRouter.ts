@@ -18,6 +18,7 @@ cardRouter.put(
     "/cards/:cardId/activation",
     validateCardRegistration,
     validateSchema(cardSchemas.cardActivationSchema),
+    validateEmployeeRegistration,
     cardController.activeCard
 );
 
