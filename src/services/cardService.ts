@@ -12,6 +12,7 @@ export async function createCard(company: Company, employee: Employee, cardType:
 
     const cardNumber = cardUtils.generateCardNumber();
     const formatedCardName = cardUtils.formatCardName(employee.fullName);
+    const expirationDate = cardUtils.calculateExpirationDate();
 
-    console.log(cardNumber, formatedCardName);
+    console.log(cardNumber, formatedCardName, expirationDate);
 }

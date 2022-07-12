@@ -1,10 +1,12 @@
 import { faker } from "@faker-js/faker";
+import dayjs from "dayjs";
 import { Company } from "../repositories/companyRepository.js";
 import { Employee } from "../repositories/employeeRepository.js";
 import * as cardRepository from "../repositories/cardRepository.js";
 import AppError from "./appErros.js";
 
 import * as constants from "./constants.js";
+
 
 export async function checkIfEmployeeBelongsToCompany(employee: Employee, company: Company) {
     if (employee.companyId != company.id) {
@@ -47,3 +49,10 @@ function formatMiddleNames(middleNames: string[]) {
         return formatedNames;
     }, []);
 };
+
+export function calculateExpirationDate() {
+    const today = dayjs();
+    const expirationDate = today.add(constants.ADDITIONAL_YEARS, 'year');
+    const formatedExpirationDate = expirationDate.format(constants.DATE_FORMAT);
+    return formatedExpirationDate;
+}
