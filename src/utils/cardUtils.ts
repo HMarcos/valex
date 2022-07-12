@@ -6,6 +6,7 @@ import * as cardRepository from "../repositories/cardRepository.js";
 import AppError from "./appErros.js";
 
 import * as constants from "./constants.js";
+import Cryptr from "cryptr";
 
 
 export async function checkIfEmployeeBelongsToCompany(employee: Employee, company: Company) {
@@ -55,4 +56,12 @@ export function calculateExpirationDate() {
     const expirationDate = today.add(constants.ADDITIONAL_YEARS, 'year');
     const formatedExpirationDate = expirationDate.format(constants.DATE_FORMAT);
     return formatedExpirationDate;
+};
+
+export function generateEncryptedSecurityCode() {
+    const cryptr = new Cryptr(constants.SECRET_KEY);
+    const securityCode = faker.finance.creditCardCVV();
+    console.log("Security Code: ", securityCode);
+    const encryptedSecurityCode = cryptr.encrypt(securityCode);
+    return  encryptedSecurityCode;
 }
