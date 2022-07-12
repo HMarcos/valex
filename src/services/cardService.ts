@@ -11,5 +11,7 @@ export async function createCard(company: Company, employee: Employee, cardType:
     await cardUtils.checkIfEmployeeHasThisCard(employee, cardType);
 
     const cardNumber = cardUtils.generateCardNumber();
-    console.log(cardNumber);
+    const formatedCardName = cardUtils.formatCardName(employee.fullName);
+
+    console.log(cardNumber, formatedCardName);
 }
