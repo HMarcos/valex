@@ -9,7 +9,7 @@ import * as constants from "./constants.js";
 import Cryptr from "cryptr";
 
 
-export async function checkIfEmployeeBelongsToCompany(employee: Employee, company: Company) {
+export function checkIfEmployeeBelongsToCompany(employee: Employee, company: Company) {
     if (employee.companyId != company.id) {
         throw new AppError(403, "The employee does not belong to the company.");
     }
@@ -65,8 +65,14 @@ export function generateEncryptedSecurityCode() {
     return  encryptedSecurityCode;
 };
 
-export async function checkIfCardBelongsToEmployee(card: cardRepository.Card, employee: Employee) {
+export function checkIfCardBelongsToEmployee(card: cardRepository.Card, employee: Employee) {
     if (card.employeeId !== employee.id){
         throw new AppError(403, "The card does not belong to the employee.");
+    }
+};
+
+export function checkIfTheCardIsAlreadyActive(card: cardRepository.Card) {
+    if (card.password) {
+        throw new AppError(403, "The card is already active.");
     }
 }

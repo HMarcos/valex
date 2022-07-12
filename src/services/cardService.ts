@@ -5,7 +5,7 @@ import { Employee } from "../repositories/employeeRepository.js";
 
 export async function createCard(company: Company, employee: Employee, cardType: cardRepository.TransactionTypes) {
 
-    await cardUtils.checkIfEmployeeBelongsToCompany(employee, company);
+    cardUtils.checkIfEmployeeBelongsToCompany(employee, company);
     await cardUtils.checkIfEmployeeHasThisCard(employee, cardType);
 
     const cardNumber = cardUtils.generateCardNumber();
@@ -31,6 +31,6 @@ export async function activeCard(card: cardRepository.Card, employee: Employee) 
     console.log(card);
     console.log(employee);
 
-    await cardUtils.checkIfCardBelongsToEmployee(card, employee);
-    
+    cardUtils.checkIfCardBelongsToEmployee(card, employee);
+    cardUtils.checkIfTheCardIsAlreadyActive(card);
 }
