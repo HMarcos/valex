@@ -33,4 +33,5 @@ export async function activeCard(card: cardRepository.Card, employee: Employee) 
 
     cardUtils.checkIfCardBelongsToEmployee(card, employee);
     cardUtils.checkIfTheCardIsAlreadyActive(card);
+    cardUtils.checkIfTheCardIsExpired(card);
 }

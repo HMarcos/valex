@@ -75,4 +75,22 @@ export function checkIfTheCardIsAlreadyActive(card: cardRepository.Card) {
     if (card.password) {
         throw new AppError(403, "The card is already active.");
     }
+};
+
+export function checkIfTheCardIsExpired(card: cardRepository.Card){
+    const {month: expirationMonth, year: expirationYear} = getExpirationDateInfo(card.expirationDate);
+    const formatedExpirationDate = `${expirationMonth}/${constants.EXPIRATION_DAY}/${expirationYear}`;
+    const expirationDate = dayjs(formatedExpirationDate);
+    const today = dayjs();
+    if (today.isAfter(expirationDate)) {
+        throw new AppError(403, "The card is expired.");
+    }
+}
+
+function getExpirationDateInfo(expirationDate: string){
+    const [month, year] = expirationDate.split('/');
+    return {
+        month,
+        year
+    }
 }
