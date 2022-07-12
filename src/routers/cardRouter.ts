@@ -14,7 +14,7 @@ cardRouter.post("/cards",
     cardController.createCard
 );
 
-cardRouter.put(
+cardRouter.patch(
     "/cards/:cardId/activation",
     validateCardRegistration,
     validateSchema(cardSchemas.cardActivationSchema),
@@ -22,7 +22,7 @@ cardRouter.put(
     cardController.activeCard
 );
 
-cardRouter.put(
+cardRouter.patch(
     "/cards/:cardId/block",
     validateCardRegistration,
     validateSchema(cardSchemas.cardBlockAndUnlockSchema),
@@ -30,7 +30,7 @@ cardRouter.put(
     cardController.blockCard
 );
 
-cardRouter.put(
+cardRouter.patch(
     "/cards/:cardId/unlock",
     validateCardRegistration,
     validateSchema(cardSchemas.cardBlockAndUnlockSchema),

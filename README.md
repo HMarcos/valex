@@ -34,7 +34,7 @@ $ npm run dev
     }
     - Retorna um objeto com as informações do cartão gerado.
 
-- PUT /cards/:cardId/activation
+- PATCH /cards/:cardId/activation
     - Rota para que o empregado possa fazer a ativação do cartão.
     - headers: {}
     - body: {
@@ -43,7 +43,7 @@ $ npm run dev
         "password": "7492"
     }
 
-- PUT /cards/:cardId/block
+- PATCH /cards/:cardId/block
     - Rota para que o empregado possa bloquear o seu cartão.
     - headers: {}
     - body: {
@@ -51,7 +51,7 @@ $ npm run dev
         "password": "7492"
     }
 
-- PUT /cards/:cardId/unlock
+- PATCH /cards/:cardId/unlock
     - Rota para que o empregado possa desbloquear o seu cartão.
     - headers: {}
     - body: {
