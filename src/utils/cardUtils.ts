@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import dayjs from "dayjs";
 import { Company } from "../repositories/companyRepository.js";
 import { Employee } from "../repositories/employeeRepository.js";
+import { Business } from "../repositories/businessRepository.js";
 import * as cardRepository from "../repositories/cardRepository.js";
 import * as paymentRepository from "../repositories/paymentRepository.js";
 import * as rechargeRepository from "../repositories/rechargeRepository.js";
@@ -170,12 +171,19 @@ export function checkIfTheCardIsBlocked(card: cardRepository.Card) {
         return true;
     }
     return false;
-}
+};
 
 export function checkIfTheCardIsUnlocked(card: cardRepository.Card) {
     if (!card.isBlocked){
         return true;
     }
     return false;
-}
+};
+
+export function checkIfCardAndBusinessHasTheSameType(card: cardRepository.Card, business: Business){
+    if (card.type === business.type){
+        return true;
+    }
+    return false;
+};
 
