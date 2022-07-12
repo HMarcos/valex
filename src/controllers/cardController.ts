@@ -43,3 +43,14 @@ export async function blockCard(req: Request, res: Response) {
     console.log('Card blocked successfully...');
     res.sendStatus(200);
 };
+
+export async function unlockCard(req: Request, res: Response) {
+    const card: Card = res.locals.card;
+    const employee: Employee = res.locals.employee;
+
+    const password: string = req.body.password;
+
+    await cardService.unlockCard(card, employee, password);
+    console.log('Card unlocked successfully...');
+    res.sendStatus(200);
+};

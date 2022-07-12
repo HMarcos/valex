@@ -171,3 +171,11 @@ export function checkIfTheCardIsBlocked(card: cardRepository.Card) {
     }
     return false;
 }
+
+export function checkIfTheCardIsUnlocked(card: cardRepository.Card) {
+    if (!card.isBlocked){
+        return true;
+    }
+    return false;
+}
+

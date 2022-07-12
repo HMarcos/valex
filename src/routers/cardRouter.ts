@@ -25,9 +25,17 @@ cardRouter.put(
 cardRouter.put(
     "/cards/:cardId/block",
     validateCardRegistration,
-    validateSchema(cardSchemas.cardBlockSchema),
+    validateSchema(cardSchemas.cardBlockAndUnlockSchema),
     validateEmployeeRegistration,
     cardController.blockCard
+);
+
+cardRouter.put(
+    "/cards/:cardId/unlock",
+    validateCardRegistration,
+    validateSchema(cardSchemas.cardBlockAndUnlockSchema),
+    validateEmployeeRegistration,
+    cardController.unlockCard
 );
 
 cardRouter.get(

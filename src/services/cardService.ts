@@ -113,3 +113,34 @@ export async function blockCard(card: cardRepository.Card, employee: Employee, p
 
     await cardRepository.update(card.id, { isBlocked: true });
 };
+
+export async function unlockCard(card: cardRepository.Card, employee: Employee, password: string) {
+
+    const cardBelongsToEmployee = cardUtils.checkIfCardBelongsToEmployee(card, employee);
+    if (!cardBelongsToEmployee) {
+        throw new AppError(403, "The card does not belong to the employee.");
+    };
+
+    const cardIsActive = cardUtils.checkIfTheCardIsActive(card);
+    if (!cardIsActive) {
+        throw new AppError(403, "The card is not active.")
+    };
+
+    const cardIsExpired = cardUtils.checkIfTheCardIsExpired(card);
+    if (cardIsExpired) {
+        throw new AppError(403, "The card is expired.");
+    };
+
+    const validPassword = cardUtils.validatePassword(card, password);
+    if (!validPassword) {
+        throw new AppError(403, "The password is invalid.");
+    };
+
+    const cardIsUnlocked = cardUtils.checkIfTheCardIsUnlocked(card);
+    if (cardIsUnlocked) {
+        throw new AppError(403, "The card is already unlocked.");
+    };
+
+    await cardRepository.update(card.id, { isBlocked: false });
+};
+

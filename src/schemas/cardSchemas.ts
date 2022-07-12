@@ -13,7 +13,7 @@ export const cardActivationSchema = Joi.object({
     password: Joi.string().length(PASSWORD_LENGTH).required(),
 });
 
-export const cardBlockSchema = Joi.object({
+export const cardBlockAndUnlockSchema = Joi.object({
     employeeId: Joi.number().integer().min(1).required(),
     password: Joi.string().length(PASSWORD_LENGTH).required(),
 });
